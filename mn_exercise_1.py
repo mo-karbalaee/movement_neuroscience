@@ -18,7 +18,7 @@ from scipy.signal import butter, filtfilt
 fl_plot_color = "#2ca02c"
 ex_plot_color = "#d62728"
 
-raw_dataset_path = '/content/wrist_flexion_extension.mat'
+raw_dataset_path = './wrist_flexion_extension.mat'
 
 mat = scipy.io.loadmat(raw_dataset_path)
 
