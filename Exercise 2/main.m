@@ -23,10 +23,10 @@ xlabel('Time (s)');
 grid on;
 
 %%% Task 1.2: Sorted Spike Trains (Recruitment Order)
-% Determine recruitment order (first firing)
+
 first_firing_samples = cellfun(@min, MUPulses);
 [~, sortIdx] = sort(first_firing_samples, 'ascend');
-MUPulses_sorted = MUPulses(sortIdx); % Use this from now on
+MUPulses_sorted = MUPulses(sortIdx); 
 
 MUPulses_sec_sorted = cell(size(MUPulses_sorted));
 for i = 1:length(MUPulses_sorted)
@@ -46,7 +46,6 @@ title('Task 1.2: Sorted MU Spike Trains and Force Signal');
 grid on;
 
 %%% Task 1.3: Instantaneous Discharge Rate (IDR)
-% Plotting the first two sorted MUs
 mu_idx1 = 1; mu_idx2 = 2;
 spikes1_sec = (double(MUPulses_sorted{mu_idx1}) - 1) / fsamp;
 idr1 = 1 ./ diff(spikes1_sec);
@@ -98,7 +97,7 @@ sgtitle(['Task 2.1: MUAP Shapes (MU ' num2str(mu_to_plot) ')']);
 
 %%% Task 3.1: Calculate Max Peak-to-Peak
 num_total_MUs = length(MUPulses_sorted);
-ptp_muap = zeros(num_total_MUs, 1); % Variable name updated per tips
+ptp_muap = zeros(num_total_MUs, 1); 
 
 for mu = 1:num_total_MUs
     mu_cell = STA_cell_output{mu};
@@ -120,7 +119,7 @@ grid on;
 %% Task 4: Spatial Distribution
 
 %%% Task 4.1: Compute RMS Matrix
-rms_muap = zeros(16, num_total_MUs); % Variable name updated per tips
+rms_muap = zeros(16, num_total_MUs); 
 for mu = 1:num_total_MUs
     mu_cell = STA_cell_output{mu};
     mu_array = [cell2mat(mu_cell(:,1)); cell2mat(mu_cell(:,2))];
