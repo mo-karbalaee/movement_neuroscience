@@ -87,6 +87,9 @@ grid on;
 
 %Task 2.1: MUAP Shapes for 16 Channels%
 
+STA_window_sec = 0.050; 
+[STA_cell_output] = spikeTriggeredAveraging(EMGSig, MUPulses_sorted, STA_window_sec, fsamp);
+
 mu_to_plot = 1; 
 mu_data_cell = STA_cell_output{mu_to_plot}; 
 
