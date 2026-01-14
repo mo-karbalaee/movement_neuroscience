@@ -87,9 +87,6 @@ grid on;
 
 %Task 2.1: MUAP Shapes for 16 Channels%
 
-STA_window_sec = 0.050; 
-[STA_cell_output] = spikeTriggeredAveraging(EMGSig, MUPulses_sorted, STA_window_sec, fsamp);
-
 mu_to_plot = 1; 
 mu_data_cell = STA_cell_output{mu_to_plot}; 
 
@@ -103,13 +100,19 @@ y_max = max(muap_shapes, [], 'all');
 sta_samples = size(muap_shapes, 2);
 sta_time = ((0:sta_samples-1) - floor(sta_samples/2)) / fsamp;
 
-figure;
+figure('Units', 'normalized', 'Position', [0.3, 0.05, 0.3, 0.85]);
+
 for ch = 1:16
     subplot(16, 1, 17-ch); 
     plot(sta_time * 1000, muap_shapes(ch, :));
     ylim([y_min, y_max]);
-    ylabel(['E', num2str(ch)]);
+    
     grid on;
+    ylabel(['E', num2str(ch)], 'Rotation', 0, 'HorizontalAlignment', 'right');
+    
+    yticks([round(y_min, 1), 0, round(y_max, 1)]);
+    set(gca, 'FontSize', 7);
+    
     if ch > 1
         set(gca, 'XTickLabel', []);
     else
