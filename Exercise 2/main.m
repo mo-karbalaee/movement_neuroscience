@@ -120,3 +120,40 @@ for ch = 1:16
     end
 end
 sgtitle(['Task 2.1: MUAP Shapes for 16 Channels (MU #', num2str(mu_to_plot), ')']);
+
+
+%Task 3.1: Use the highest peak-to-peak value from all channels%
+
+num_total_MUs = length(MUPulses_sorted);
+ptp_amplitudes = zeros(num_total_MUs, 1);
+
+for mu = 1:num_total_MUs
+    mu_cell = STA_cell_output{mu};
+    
+    mu_array = [cell2mat(mu_cell(:,1)); cell2mat(mu_cell(:,2))];
+    
+    ch_ptp = max(mu_array, [], 2) - min(mu_array, [], 2);
+    
+    ptp_amplitudes(mu) = max(ch_ptp);
+end
+
+%Task 3.2: Task 3.2: MUAP Amplitude vs. Recruitment Order%
+
+
+recruitment_order = 1:length(ptp_amplitudes);
+
+figure;
+scatter(recruitment_order, ptp_amplitudes, 'filled', 'MarkerFaceColor', 'b');
+hold on;
+
+mdl = fitlm(recruitment_order, ptp_amplitudes);
+plot(recruitment_order, mdl.Fitted, 'r', 'LineWidth', 1.5);
+
+r_squared = mdl.Rsquared.Ordinary;
+title(['Task 3.2: MUAP Amplitude vs. Recruitment Order (R^2 = ', num2str(r_squared, '%.3f'), ')']);
+xlabel('Physiological Recruitment Order (Sorted)');
+ylabel('Max Peak-to-Peak Amplitude (mV)');
+legend('Motor Units', 'Linear Regression');
+grid on;
+
+fprintf('The R^2 value for Task 3.2 is: %.4f\n', r_squared);
