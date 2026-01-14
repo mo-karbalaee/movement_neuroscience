@@ -160,3 +160,43 @@ legend('Motor Units', 'Linear Regression');
 grid on;
 
 fprintf('The R^2 value for Task 3.2 is: %.4f\n', r_squared);
+
+
+%Task 4.1: Spatial Feature Extraction - Channel-wise RMS Calculation%
+
+num_total_MUs = length(MUPulses_sorted);
+rms_matrix = zeros(16, num_total_MUs);
+
+for mu = 1:num_total_MUs
+    mu_cell = STA_cell_output{mu};
+    
+
+    mu_array = [cell2mat(mu_cell(:,1)); cell2mat(mu_cell(:,2))];
+    
+    for ch = 1:16
+        rms_matrix(ch, mu) = rms(mu_array(ch, :));
+    end
+end
+
+
+%Task 4.2: Spatial Location Heatmap of all Motor Units%
+
+figure;
+
+imagesc(1:num_total_MUs, 1:16, rms_matrix);
+
+
+set(gca, 'YDir', 'normal'); 
+
+
+colorbar;
+colormap('parula'); 
+
+title('Task 4.2: Spatial Mapping of Motor Units via RMS Intensity');
+xlabel('Physiological Recruitment Order (Sorted MU #)');
+ylabel('Electrode Channel (E1 - E16)');
+
+xticks(1:num_total_MUs);
+yticks(1:16);
+
+grid on;
