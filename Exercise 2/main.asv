@@ -52,8 +52,7 @@ xlim([0, time(end)]);
 grid on;
 
 
-% Task 1.3: Instantaneous Discharge Rate of Two MUs and Force Signal %
-
+% Task 1.2 already provided MUPulses_sorted
 mu_idx1 = 1; 
 mu_idx2 = 2;
 
@@ -67,53 +66,17 @@ time_idr2 = spikes2_sec(1:end-1);
 
 figure;
 yyaxis left
-h1 = scatter(time_idr1, idr1, 'MarkerFaceColor', 'b', 'MarkerEdgeColor', 'b');
+scatter(time_idr1, idr1, 'filled', 'MarkerFaceAlpha', 0.6);
 hold on;
-h2 = scatter(time_idr2, idr2, 'MarkerFaceColor', 'r', 'MarkerEdgeColor', 'r');
+scatter(time_idr2, idr2, 'filled', 'MarkerFaceAlpha', 0.6);
 ylabel('Discharge Rate (Hz)');
+legend('MU #1', 'MU #2');
 
 yyaxis right
-h3 = plot(time, force_signal, 'Color', [0 0.5 0], 'LineWidth', 1.5);
+plot(time, force_signal);
 ylabel('Force (N)');
-ax = gca;
-ax.YAxis(2).Color = [0 0.5 0]; 
 
 xlim([0, time(end)]);
 title('Task 1.3: Instantaneous Discharge Rate of Two MUs and Force Signal');
 xlabel('Time (s)');
-legend([h1, h2, h3], {'MU #1', 'MU #2', 'Force Signal'}, 'Location', 'northeast');
 grid on;
-
-
-%Task 2.1: MUAP Shapes for 16 Channels%
-
-STA_window_sec = 0.050; 
-[STA_cell_output] = spikeTriggeredAveraging(EMGSig, MUPulses_sorted, STA_window_sec, fsamp);
-
-mu_to_plot = 1; 
-mu_data_cell = STA_cell_output{mu_to_plot}; 
-
-muap_shapes = zeros(16, length(mu_data_cell{1,1}));
-muap_shapes(1:8, :) = cell2mat(mu_data_cell(:,1)); 
-muap_shapes(9:16, :) = cell2mat(mu_data_cell(:,2));
-
-y_min = min(muap_shapes, [], 'all');
-y_max = max(muap_shapes, [], 'all');
-
-sta_samples = size(muap_shapes, 2);
-sta_time = ((0:sta_samples-1) - floor(sta_samples/2)) / fsamp;
-
-figure;
-for ch = 1:16
-    subplot(16, 1, 17-ch); 
-    plot(sta_time * 1000, muap_shapes(ch, :));
-    ylim([y_min, y_max]);
-    ylabel(['E', num2str(ch)]);
-    grid on;
-    if ch > 1
-        set(gca, 'XTickLabel', []);
-    else
-        xlabel('Time (ms)');
-    end
-end
-sgtitle(['Task 2.1: MUAP Shapes for 16 Channels (MU #', num2str(mu_to_plot), ')']);
